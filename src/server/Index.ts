@@ -1,9 +1,9 @@
-const http = require('http');
 const express = require('express');
+const http = require('http');
 const bodyParser = require('body-parser');
-const winston = require('winston')
+require('dotenv').load();
 
-const PORT = 1337;
+const winston = require('winston');
 
 const logger = winston.createLogger({
     transports: [
@@ -18,12 +18,14 @@ const logger = winston.createLogger({
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
+    
 app.post(`/sms`, (req: any, res: any) => {
     const {To, From, Body} = req.body;
-    logger.info(`SMS received. To: ${To} From: ${From} Message: ${Body}`)
+    logger.info(`SMS received. To: ${To} From: ${From} Message: ${Body}`);
 })
 
+const PORT = process.env.PORT || 1337;
+
 http.createServer(app).listen(PORT, () => {
-    logger.info(`Server running on port ${PORT}`)
+    logger.info(`Server running on port ${PORT}`);
 })
