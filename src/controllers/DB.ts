@@ -1,5 +1,8 @@
 const Location = require('../models/Location')
+const User = require('../models/User')
 const mongoose = require('mongoose');
+
+import * as GraphqlType from '../types/Test'
 
 export const createLocation = async (tel: string, message: string) => {
 
@@ -12,7 +15,15 @@ export const createLocation = async (tel: string, message: string) => {
 
     console.log(await location.save())
 }
+
+export const createUser : Function = async (args: GraphqlType.GQL.ICreateUserOnRootMutationArguments) => {
     
+    const user = new User({
+        name: args.userInput.name
+    })
+     
+    return user.save()
+}
 
 export const connect : Function = () : any => {
     mongoose.connect(

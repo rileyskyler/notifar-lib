@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import * as Mongoose from 'mongoose'
+const Schema = Mongoose.Schema;
 
 const locationSchema = new Schema({
     longitude : {
@@ -12,4 +12,4 @@ const locationSchema = new Schema({
     }
 })
 
-module.exports = mongoose.model('Location', locationSchema)
+module.exports = Mongoose.model('Location', locationSchema)

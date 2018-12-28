@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": " node_modules/typescript/bin/tsc",
-    "start": "node build/ts/Server.js",
+    "build": "node node_modules/gql2ts/dist/index.js src/schema.gql -o ./src/types/Test.ts && node_modules/typescript/bin/tsc",
+    "start": "node build/ts/Index.js",
     "install-ngrok": "curl https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.zip -O -J -L",
     "ngrok": "./ngrok http 1337"
   },
@@ -20,12 +20,14 @@
   },
   "homepage": "https://github.com/rileyskyler/notifar-lib#readme",
   "dependencies": {
+    "@types/mongoose": "^5.3.5",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "express-graphql": "^0.7.1",
     "fs": "0.0.1-security",
+    "gql2ts": "^1.10.1",
     "graphql": "^14.0.2",
     "graphql-codegen-typescript-mongodb": "^0.15.2",
     "json-schema-to-typescript": "^6.1.0",

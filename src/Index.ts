@@ -4,18 +4,19 @@ const http = require('http');
 const bodyParser = require('body-parser');
 const winston = require('winston')
 const graphqlHttp = require('express-graphql');
-
+const graphql = require('graphql');
+const fs = require('fs')
 require('dotenv').load();
 
 import * as DB from './controllers/DB'
-import * as Schema from './Schema'
-import { GraphQLSchema } from './Schema'
-
-const app = express();
+import * as RootValue from './RootValue'
 
 let logger : any
 
+const app = express();
+
 const init : Function = async () : Promise<void> => {
+    
     const PORT = process.env.PORT || 1337;
     
     logger = winston.createLogger({
@@ -25,17 +26,25 @@ const init : Function = async () : Promise<void> => {
         format: winston.format.combine(
             winston.format.colorize(),
             winston.format.simple()
-        )
+            )
     })
-
+        
     await DB.connect()
-
+    
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     
+    const schema = fs.readFileSync('./src/schema.gql', 'utf8')
+
     app.use('/api', graphqlHttp({
-        schema: GraphQLSchema,
-        graphiql: true
+        schema: await graphql.buildSchema(fs.readFileSync('./src/schema.gql', 'utf8')),
+        rootValue: {
+            createUser: async (args: any) => {
+                const res =  await DB.createUser(args)
+                return {name: res.name, _id: res._id.toString()}
+            }
+        },
+        graphiql: false || process.env.GRAPHIQL === 'true' ? true : false
     }))
 
     app.post(`/sms`, (req: any, res: any) => {
