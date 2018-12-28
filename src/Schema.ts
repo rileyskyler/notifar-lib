@@ -8,6 +8,11 @@ export const GraphQLSchema = buildSchema(`
         latitude: String!
     }
 
+    type User {
+        _id: ID
+        name: String!
+    }
+
     input LocationInput {
         longitude: String!
         latitude: String!
