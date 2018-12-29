@@ -9,7 +9,6 @@ const fs = require('fs')
 require('dotenv').load();
 
 import * as DB from './controllers/DB'
-import * as RootValue from './RootValue'
 
 let logger : any
 
@@ -26,7 +25,7 @@ const init : Function = async () : Promise<void> => {
         format: winston.format.combine(
             winston.format.colorize(),
             winston.format.simple()
-            )
+        )
     })
         
     await DB.connect()
@@ -39,10 +38,9 @@ const init : Function = async () : Promise<void> => {
     app.use('/api', graphqlHttp({
         schema: await graphql.buildSchema(fs.readFileSync('./src/schema.gql', 'utf8')),
         rootValue: {
-            createUser: async (args: any) => {
-                const res =  await DB.createUser(args)
-                return {name: res.name, _id: res._id.toString()}
-            }
+            locations: DB.locations,
+            createUser: DB.createUser,
+            createDevice: DB.createDevice
         },
         graphiql: false || process.env.GRAPHIQL === 'true' ? true : false
     }))

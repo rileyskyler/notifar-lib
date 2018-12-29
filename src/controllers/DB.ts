@@ -1,8 +1,14 @@
-const Location = require('../models/Location')
-const User = require('../models/User')
 const mongoose = require('mongoose');
 
-import * as GraphqlType from '../types/Test'
+const Location = require('../models/Location')
+const User = require('../models/User')
+const Device = require('../models/Device')
+
+import { GraphqlType } from '../types/GraphqlSchema'
+ 
+export const locations = async () => {
+    return Location.find({longitude: 'testLong'})
+}
 
 export const createLocation = async (tel: string, message: string) => {
 
@@ -16,13 +22,23 @@ export const createLocation = async (tel: string, message: string) => {
     console.log(await location.save())
 }
 
-export const createUser : Function = async (args: GraphqlType.GQL.ICreateUserOnRootMutationArguments) => {
+
+export const createUser : Function = async (args: GraphqlType.ICreateUserOnRootMutationArguments) => {
     
     const user = new User({
         name: args.userInput.name
     })
-     
-    return user.save()
+    const res = await user.save()
+    return {name: res.name, _id: res._id.toString()}
+}
+
+export const createDevice : Function = async (args: GraphqlType.ICreateDeviceOnRootMutationArguments) => {
+    console.log(args)
+    const device = new Device({
+        tel: args.deviceInput.tel
+    })
+    const res = await device.save()
+    return {_id: res._id.toString(), tel: res.tel}
 }
 
 export const connect : Function = () : any => {

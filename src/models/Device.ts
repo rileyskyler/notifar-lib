@@ -1,11 +1,11 @@
 import * as Mongoose from 'mongoose'
 const Schema = Mongoose.Schema;
 
-const userSchema = new Schema({
-    name : {
+const deviceSchema = new Schema({
+    tel : {
         type: String,
         required: true
     }
 })
 
-export default Mongoose.model('User', userSchema)
+export default Mongoose.model('Device', deviceSchema)

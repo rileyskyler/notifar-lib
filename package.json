@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node node_modules/gql2ts/dist/index.js src/schema.gql -o ./src/types/Test.ts && node_modules/typescript/bin/tsc",
+    "build-schema": "node node_modules/gql2ts/dist/index.js src/schema.gql -n GraphqlType -o ./src/types/GraphqlSchema.ts",
+    "build-ts": "node_modules/typescript/bin/tsc",
     "start": "node build/ts/Index.js",
     "install-ngrok": "curl https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.zip -O -J -L",
-    "ngrok": "./ngrok http 1337"
+    "ngrok": "./ngrok http 1337",
+    "test": "mocha -r ts-node/register src/**/*.spec.ts"
   },
   "repository": {
     "type": "git",
@@ -36,5 +38,12 @@
     "twilio": "^3.26.0",
     "typescript": "^3.2.2",
     "winston": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.5",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "ts-node": "^7.0.1"
   }
 }
