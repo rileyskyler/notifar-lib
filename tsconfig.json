@@ -1,16 +1,21 @@
 {
     "compilerOptions": {
-        "module": "system",
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,
         "outDir": "build/ts/",
-        "sourceMap": true
+        "sourceMap": true,
+        "module": "commonJS",
+        "lib": ["es2017"]
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
+        "*.gql"
     ],
     "exclude": [
         "node_modules"
     ]
 }
+
+
+

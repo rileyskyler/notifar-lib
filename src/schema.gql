@@ -1,0 +1,45 @@
+type Location {
+    _id: ID
+    longitude: String!
+    latitude: String!
+}
+
+type User {
+    _id: ID
+    name: String!
+}
+
+type Device {
+    _id: ID
+    tel: String!
+}
+
+input LocationInput {
+    longitude: String!
+    latitude: String!
+}
+
+input UserInput {
+    name: String!
+}
+
+input DeviceInput {
+    tel: String!
+}
+
+type RootMutation {
+    createLocation(locationInput: LocationInput!) : Location
+    createUser(userInput: UserInput!) : User
+    createDevice(deviceInput: DeviceInput!) : Device
+}
+
+type RootQuery {
+    locations: [Location!]!
+    users: [User!]!
+    devices: [Device!]!
+}
+
+schema {
+    query: RootQuery
+    mutation: RootMutation
+}
