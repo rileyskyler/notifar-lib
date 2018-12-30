@@ -1,6 +1,8 @@
 # Notifar Library (notifar-lib)
 
-### NPM Scripts
+## Schema Structure 
+![Schema](./assets/diagrams/schema/schema.png)
+
 ### Environmental Variables (.env)
 ```
 PORT=<NUMBER>

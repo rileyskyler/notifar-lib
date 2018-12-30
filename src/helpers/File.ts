@@ -1,0 +1,1 @@
+export const getFileName = (filePath : string, dirPath : string) => filePath.slice(dirPath.length + 1)
