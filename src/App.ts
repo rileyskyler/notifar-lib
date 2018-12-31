@@ -1,7 +1,6 @@
 const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
-import * as Winston from 'Winston'
 const graphqlHttp = require('express-graphql');
 const graphql = require('graphql')
 import * as fs from 'fs'

@@ -8,9 +8,8 @@ import logger from '../helpers/Logger'
 import { Configuration } from '../types/Configuration'
 require('dotenv').load();
 import { GraphqlType } from '../types/GraphQlSchema'
-
 import GraphQLResolvers from '../graphql/resolvers/Index'
-import { stringify } from 'querystring';
+
 
 describe('Test', () => {
 
