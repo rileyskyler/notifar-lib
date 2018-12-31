@@ -18,9 +18,9 @@ import * as Location from './graphql/resolvers/Location'
 import GraphQLResolvers from './graphql/resolvers/Index'
 import { Configuration } from './types/Configuration'
 
+import logger from './helpers/Logger'
 
-
-const init : Function = async (conf: Configuration) : Promise<any> => {
+export const init : Function = async (conf: Configuration) : Promise<any> => {
 
     await Mongoose.connect(
         `mongodb+srv://${conf.mongo.user}:${conf.mongo.password}@cluster0-beat6.mongodb.net/${conf.mongo.database}?retryWrites=true`,
@@ -44,15 +44,11 @@ const init : Function = async (conf: Configuration) : Promise<any> => {
         Location.create(message.From, message.Body)
         conf.logger.info(`SMS received! To: ${message.To} From: ${message.From} Message: ${message.Body}`);
     })
-
+    
     return app        
 }
 
 const main : Function = async () : Promise<any> => {
-
-    const myFormat = (info : any) => {
-        return `${info.timestamp} [${info.label}] ${info.level}: ${info.message}`;
-    };
     
     const conf : Configuration  = {
 
@@ -65,15 +61,7 @@ const main : Function = async () : Promise<any> => {
             graphiql: false || process.env.GRAPHIQL === 'true' ? true : false
         },
 
-        logger: Winston.createLogger({
-            format: Winston.format.combine(
-                Winston.format.colorize(),
-                Winston.format.simple()
-            ),
-            transports: [
-                new Winston.transports.Console()
-            ]
-        })
+        logger
     }
 
     const app = await init(conf)
