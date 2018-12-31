@@ -30,8 +30,6 @@
     "express-graphql": "^0.7.1",
     "fs": "0.0.1-security",
     "graphql": "^14.0.2",
-    "graphql-codegen-typescript-mongodb": "^0.15.2",
-    "json-schema-to-typescript": "^6.1.0",
     "mongoose": "^5.4.1",
     "nodemon": "^1.18.9",
     "twilio": "^3.26.0",
