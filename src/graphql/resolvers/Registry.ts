@@ -1,7 +1,7 @@
 import Location from '../../models/Location'
 import User from '../../models/User'
 import Device from '../../models/Device'
-import { GraphqlType } from '../../types/GraphQlSchema'
+
 import { Configuration } from '../../types/Configuration' 
 
 const fileName = require('../../helpers/File').getFileName(__filename, __dirname)
@@ -32,7 +32,7 @@ class Registry {
                 }
             },
             
-            createUser: async (args: GraphqlType.ICreateUserOnRootMutationArguments) => {
+            createUser: async (args: any) => {
                 
                 this.conf.logger.info(`[${fileName}] Create User`);
                 
@@ -45,7 +45,7 @@ class Registry {
                 return {name: res.name, _id: res._id.toString()}
             },
             
-            createDevice: async (args: GraphqlType.ICreateDeviceOnRootMutationArguments) => {
+            createDevice: async (args: any) => {
                 
                 this.conf.logger.info(`[${fileName}] Create Device`);
                 

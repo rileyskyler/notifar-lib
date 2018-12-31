@@ -7,7 +7,7 @@ import { init } from '../App'
 import logger from '../helpers/Logger'
 import { Configuration } from '../types/Configuration'
 require('dotenv').load();
-import { GraphqlType } from '../types/GraphQlSchema'
+
 import GraphQLResolvers from '../graphql/resolvers/Index'
 
 
@@ -41,7 +41,7 @@ describe('Test', () => {
 
     let userId : any;
 
-    const userArgs : GraphqlType.ICreateUserOnRootMutationArguments = {
+    const userArgs : any = {
         userInput: {
             name: 'Trs'
         }
@@ -60,7 +60,7 @@ describe('Test', () => {
 
     let deviceId : any
     
-    const deviceArgs : GraphqlType.ICreateDeviceOnRootMutationArguments = {
+    const deviceArgs : any = {
         deviceInput: {
             tel: "+123456789"
         }
