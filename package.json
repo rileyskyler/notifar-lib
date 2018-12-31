@@ -29,7 +29,6 @@
     "express": "^4.16.4",
     "express-graphql": "^0.7.1",
     "fs": "0.0.1-security",
-    "gql2ts": "^1.10.1",
     "graphql": "^14.0.2",
     "graphql-codegen-typescript-mongodb": "^0.15.2",
     "json-schema-to-typescript": "^6.1.0",
