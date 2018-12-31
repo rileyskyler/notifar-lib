@@ -1,7 +1,6 @@
 language: node_js
 
-install
-- npm install
 
-script
-- npm run build-ts
+install: npm install
+
+# script: npm build-ts
