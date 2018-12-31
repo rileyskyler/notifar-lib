@@ -23,6 +23,14 @@ class Registry {
         
                 return Location.find({longitude: 'testLong'})
             },
+
+            user: async (userId : string) => {
+                try {
+                    return User.findById(userId);
+                } catch (err) {
+                    throw err;
+                }
+            },
             
             createUser: async (args: GraphqlType.ICreateUserOnRootMutationArguments) => {
                 

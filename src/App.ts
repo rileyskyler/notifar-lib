@@ -1,4 +1,3 @@
-
 const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
@@ -49,6 +48,7 @@ export const init : Function = async (conf: Configuration) : Promise<any> => {
 }
 
 const main : Function = async () : Promise<any> => {
+
     
     const conf : Configuration  = {
 
