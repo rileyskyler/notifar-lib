@@ -2,11 +2,13 @@ type Location {
     _id: ID
     longitude: String!
     latitude: String!
+    device: Device!
 }
 
 type User {
     _id: ID
     name: String!
+    devices: [Device]
 }
 
 type Device {

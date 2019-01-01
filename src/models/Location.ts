@@ -2,13 +2,17 @@ import * as Mongoose from 'mongoose'
 const Schema = Mongoose.Schema;
 
 const locationSchema = new Schema({
-    longitude : {
+    longitude: {
         type: String,
         required: true
     },
-    latitude : {
+    latitude: {
         type: String,
         required: true
+    },
+    device: {
+        type: Schema.Types.ObjectId,
+        ref: 'Device'
     }
 })
 

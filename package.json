@@ -6,10 +6,10 @@
   "scripts": {
     "build-schema": "node node_modules/gql2ts/dist/index.js src/schema.gql -n GraphqlType -o ./src/types/GraphqlSchema.ts",
     "build-ts": "node_modules/typescript/bin/tsc",
-    "start": "node build/ts/Index.js",
+    "start": "node build/ts/App.js",
     "install-ngrok": "curl https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.zip -O -J -L",
     "ngrok": "./ngrok http 1337",
-    "test": "mocha -r ts-node/register src/**/*.spec.ts"
+    "test": "node_modules/mocha/bin/mocha -r node_modules/ts-node/register/index.js src/**/*.spec.ts"
   },
   "repository": {
     "type": "git",
@@ -29,10 +29,7 @@
     "express": "^4.16.4",
     "express-graphql": "^0.7.1",
     "fs": "0.0.1-security",
-    "gql2ts": "^1.10.1",
     "graphql": "^14.0.2",
-    "graphql-codegen-typescript-mongodb": "^0.15.2",
-    "json-schema-to-typescript": "^6.1.0",
     "mongoose": "^5.4.1",
     "nodemon": "^1.18.9",
     "twilio": "^3.26.0",
