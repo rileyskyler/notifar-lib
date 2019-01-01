@@ -21,22 +21,26 @@ describe('Test', () => {
             database: 'testr',
             user: process.env.MONGO_USER,
             password: process.env.MONGO_PASSWORD,
-            graphiql: false || process.env.GRAPHIQL === 'true' ? true : false
+            graphiql: false
         },
 
         logger
     }
+    let db : any;
 
     const resolver = new GraphQLResolvers(conf).methods
     
-    before('before', async () => {
-       
-        await Mongoose.connect(
+    const init = async () => {
+
+        db = await Mongoose.connect(
             `mongodb+srv://${conf.mongo.user}:${conf.mongo.password}@cluster0-beat6.mongodb.net/${conf.mongo.database}?retryWrites=true`,
             { useNewUrlParser: true }
         )
 
-        Mongoose.connection.db.createCollection('users')
+    }
+
+    before('before', async () => {
+       await init()
     })
 
     let userId : any;
@@ -58,13 +62,13 @@ describe('Test', () => {
         assert.equal(user.name, userArgs.userInput.name)
     })
 
-    let deviceId : any
+    // let deviceId : any
     
-    const deviceArgs : any = {
-        deviceInput: {
-            tel: "+123456789"
-        }
-    }
+    // const deviceArgs : any = {
+    //     deviceInput: {
+    //         tel: "+123456789"
+    //     }
+    // }
 
     // it('Create a device', async () => {
     //     const res = await resolver.createDevice(deviceArgs)
@@ -73,6 +77,8 @@ describe('Test', () => {
     // })
 
     after('after', async () => {
-
+        db.disconnect()
     })
+
+
 })
