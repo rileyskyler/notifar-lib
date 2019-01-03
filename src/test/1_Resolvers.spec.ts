@@ -9,7 +9,7 @@ import { Configuration } from '../types/Configuration'
 require('dotenv').load();
 
 import GraphQLResolvers from '../graphql/resolvers/Index'
-
+import * as GraphQLType from '../types/GraphQlSchema'
 
 describe('Test', () => {
 
@@ -64,11 +64,11 @@ describe('Test', () => {
 
     // let deviceId : any
     
-    // const deviceArgs : any = {
-    //     deviceInput: {
-    //         tel: "+123456789"
-    //     }
-    // }
+    const deviceArgs : GraphQLType.GraphqlType.ICreateDeviceOnRootMutationArguments = {
+        deviceInput: {
+            tel: "+123456789"
+        }
+    }
 
     // it('Create a device', async () => {
     //     const res = await resolver.createDevice(deviceArgs)
