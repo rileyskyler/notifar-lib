@@ -62,19 +62,22 @@ describe('Test', () => {
         assert.equal(user.name, userArgs.userInput.name)
     })
 
-    // let deviceId : any
+    let deviceId : any
     
-    const deviceArgs : GraphQLType.GraphqlType.ICreateDeviceOnRootMutationArguments = {
+    const deviceArgs : GraphQLType.ICreateDeviceOnRootMutationArguments = {
         deviceInput: {
             tel: "+123456789"
         }
     }
 
-    // it('Create a device', async () => {
-    //     const res = await resolver.createDevice(deviceArgs)
-    //     deviceId = res._id
-    //     assert.equal(res.tel, deviceArgs.deviceInput.tel)
-    // })
+    it('Create a device', async () => {
+        
+        const res = await resolver.createDevice(deviceArgs)
+
+
+        // deviceId = res._id.toString()
+        // assert.equal(res.tel, deviceArgs.deviceInput.tel)
+    })
 
     after('after', async () => {
         db.disconnect()
