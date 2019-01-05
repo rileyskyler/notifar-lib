@@ -9,7 +9,13 @@ const deviceSchema = new Schema({
     owner : {
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }
+    },
+    locations : [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Location'
+        }
+    ]
 })
 
 export default Mongoose.model('Device', deviceSchema)

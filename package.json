@@ -6,7 +6,7 @@
   "scripts": {
     "build-schema": "node node_modules/gql2ts/dist/index.js src/schema.gql -n GraphqlType -o ./src/types/GraphqlSchema.ts",
     "build-ts": "node_modules/typescript/bin/tsc",
-    "start": "node build/ts/App.js",
+    "start": "nodemon build/ts/App.js",
     "install-ngrok": "curl https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.zip -O -J -L",
     "ngrok": "./ngrok http 1337",
     "test": "node_modules/mocha/bin/mocha -r node_modules/ts-node/register/index.js src/**/*.spec.ts"

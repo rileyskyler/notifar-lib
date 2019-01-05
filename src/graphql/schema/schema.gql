@@ -8,12 +8,13 @@ type Location {
 type User {
     _id: ID
     name: String!
-    devices: [Device]
+    devices: [Device!]
 }
 
 type Device {
     _id: ID
     tel: String!
+    locations: [Location!]
 }
 
 input LocationInput {

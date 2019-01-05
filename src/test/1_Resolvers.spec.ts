@@ -52,9 +52,9 @@ describe('Test', () => {
     }
 
     it('Create a user', async () => {
-        const res = await resolver.createUser(userArgs)
-        userId = res._id
-        assert.equal(res.name, userArgs.userInput.name)
+        const user = await resolver.createUser(userArgs)
+        userId = user._id
+        assert.equal(user.name, userArgs.userInput.name)
     })
     
     it('Get a user', async () => {
@@ -71,12 +71,14 @@ describe('Test', () => {
     }
 
     it('Create a device', async () => {
+        const device = await resolver.createDevice(deviceArgs, userId)
+        assert.equal(device.tel, deviceArgs.deviceInput.tel)
         
-        const res = await resolver.createDevice(deviceArgs)
+    })
 
-
-        // deviceId = res._id.toString()
-        // assert.equal(res.tel, deviceArgs.deviceInput.tel)
+    it('Get a device', async () => {
+        const res = await resolver.createDevice(deviceArgs, userId)
+        assert.equal(res.tel, deviceArgs.deviceInput.tel)
     })
 
     after('after', async () => {
