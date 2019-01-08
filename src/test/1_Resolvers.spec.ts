@@ -37,7 +37,6 @@ describe('Test', () => {
             `mongodb+srv://${conf.mongo.user}:${conf.mongo.password}@cluster0-beat6.mongodb.net/${conf.mongo.database}?retryWrites=true`,
             { useNewUrlParser: true }
         )
-            console.log(db)
     }
 
     before('before', async () => {

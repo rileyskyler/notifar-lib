@@ -10,6 +10,8 @@ import { Configuration } from '../../types/Configuration'
 
 import * as GraphQlSchema from '../../types/GraphQlSchema';
 
+import * as Misc from '../../types/Misc'
+
 require('dotenv').load();
 
 class Auth {
@@ -35,7 +37,6 @@ class Auth {
                     }
                     else {
                         this.conf.logger.info(`[Auth] User found`)
-                        console.log(userToLogin)
                         
                         const authenticated = await bcrypt.compare(args.loginInput.password, userToLogin.password)
                         if(!authenticated) {
@@ -88,20 +89,34 @@ class Auth {
                 }
             },
             
-            createDevice: async (args : any) => {
+            createDevice: async (args : GraphQlSchema.CreateDevice, req: any) => {
+
+                this.conf.logger.info(`[Registry] Create Device`);
                 
-                this.conf.logger.info(`[Auth] Create Device`);
+                if(!req.authorized) {
+                    throw new Error('Unauthorized!')
+                }
 
                 try {
+
+                    const deviceKey: Misc.DeviceKey = {
+                        tel: args.deviceInput.tel,
+                        key: process.env.AUTH_KEY
+                    }
+
                     const device = new Device({
-                        tel: args.deviceInput.tel
+                        tel: args.deviceInput.tel,
+                        key: await bcrypt.hash(JSON.stringify(deviceKey), 12),
                     })
+
                     const res : any = await device.save();
-                    const user : any = await User.findById('5c2929c0b676ce274162efa9');
+                    
+                    const user : any = await User.findById(req.userId); 
                     user.devices.push(device);
+
                     await user.save()
-                    //fix
-                    return {_id: res._id.toString(), tel: res.tel};
+                    
+                    return {...res._doc, _id: res.id};
                 }
                 catch (err) {
                     throw err
@@ -109,9 +124,7 @@ class Auth {
             }
 
         }
-
     }
-        
 }
 
 export default Auth;

@@ -22,16 +22,6 @@ class Registry {
         this.conf = configuration
         
         this.methods = {
-
-            login: async (args: any) => {
-                try {
-                    User.findOne({email: 'test'})
-                    
-                }
-                catch (err) {
-                    throw err
-                }
-            },
             
             users: async () => {
                 try {
@@ -49,6 +39,7 @@ class Registry {
             },
             
             devices: async (deviceIds : any) => {
+                
                 try {
                     return (await Device.find({ _id: { $in: deviceIds } })).map((device : any) => {
                         return {
@@ -80,31 +71,9 @@ class Registry {
                 }
             },
             
-            createUser: async (args: any) => {
-                
-                this.conf.logger.info(`[Registry] Create User`);
-                
-                try {
+    
+            createDevice: async (args : GraphQlType.CreateDevice, req: any) => {
 
-                    const hashedPassword = await bcrypt.hash(args.userInput.password, 12)
-
-                    const user = new User({
-                        name: args.userInput.name,
-                        email: args.userInput.email,
-                        password: hashedPassword
-                    })
-
-                    const res : any = await user.save()
-
-                    return {name: res.name, _id: res._id.toString()}
-                }
-                catch (err) {
-                    throw err
-                }
-            },
-            
-            createDevice: async (args : GraphQlType.CreateDevice) => {
-                
                 this.conf.logger.info(`[Registry] Create Device`);
 
                 try {
