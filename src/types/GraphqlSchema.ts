@@ -1,75 +1,60 @@
-export interface IGraphQLResponseRoot {
-  data?: IRootQuery | IRootMutation;
-  errors?: Array<IGraphQLResponseError>;
+import * as Mongoose from 'mongoose'
+const Schema = Mongoose.Schema;
+
+
+export interface Location {
+    _id: Mongoose.Types.ObjectId;
+    longitude: string;
+    latitude: string;
+    device: Device
 }
 
-export interface IGraphQLResponseError {
-  /** Required for all errors */
-  message: string;
-  locations?: Array<IGraphQLResponseErrorLocation>;
-  /** 7.2.2 says 'GraphQL servers may provide additional entries to error' */
-  [propName: string]: any;
+export interface Device {
+    _id: Mongoose.Types.ObjectId;
+    tel: string;
+    key: string;
+    locations: Location[]
 }
 
-export interface IGraphQLResponseErrorLocation {
-  line: number;
-  column: number;
+export interface User {
+    _id: Mongoose.Types.ObjectId;
+    name: string;
+    email: string;
+    password: string;
+    devices: Device[]
 }
 
-export interface IRootQuery {
-  __typename: 'RootQuery';
-  locations: Array<ILocation>;
-  users: Array<IUser>;
-  devices: Array<IDevice>;
+export interface CreateUser {
+    userInput: UserInput
 }
 
-export interface ILocation {
-  __typename: 'Location';
-  _id: string | null;
-  longitude: string;
-  latitude: string;
+interface UserInput {
+    name: string;
+    email: string;
+    password: string;
 }
 
-export interface IUser {
-  __typename: 'User';
-  _id: string | null;
-  name: string;
+export interface CreateDevice {
+    deviceInput: DeviceInput
 }
 
-export interface IDevice {
-  __typename: 'Device';
-  _id: string | null;
-  tel: string;
+interface DeviceInput {
+    tel: string;
 }
 
-export interface IRootMutation {
-  __typename: 'RootMutation';
-  createLocation: ILocation | null;
-  createUser: IUser | null;
-  createDevice: IDevice | null;
+export interface CreateLocation {
+    locationInput: LocationInput
 }
 
-export interface ICreateLocationOnRootMutationArguments {
-  locationInput: ILocationInput;
+interface LocationInput {
+    longitude: string;
+    latitude: string;
 }
 
-export interface ICreateUserOnRootMutationArguments {
-  userInput: IUserInput;
+export interface Login {
+    loginInput: LoginInput;
 }
-
-export interface ICreateDeviceOnRootMutationArguments {
-  deviceInput: IDeviceInput;
-}
-
-export interface ILocationInput {
-  longitude: string;
-  latitude: string;
-}
-
-export interface IUserInput {
-  name: string;
-}
-
-export interface IDeviceInput {
-  tel: string;
+interface LoginInput {
+    email: string;
+    password: string;
 }

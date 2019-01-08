@@ -1,15 +1,39 @@
 import Location from '../../models/Location'
+import * as bcrypt from 'bcryptjs'
 
-export const create = async (from: string, message: string) => {
+import * as Misc from '../../types/Misc'
+import Device from '../../models/Device';
+
+export const create = async (from: string, body: string) => {
 
     this.conf.logger.info(`[Location] Create Location`);
 
-    const coordinates = message.replace(/\s/g, '').split(',')
+    try {
 
-    const location = new Location({
-        latitude: coordinates[0],
-        longitude: coordinates[1]
-    })
+        const ping: Misc.Ping = JSON.parse(body)
+        
+        if(ping.key && ping.latitude && ping.longitude) {
 
-    await location.save()
+            const device : any = await Device.findOne({tel: from})
+
+            if(device && device.key === ping.key) {
+
+                const location = new Location({
+                    latitude: ping.latitude,
+                    longitude: ping.longitude,
+                    device
+                })
+
+                await location.save()
+            }
+
+
+        }
+        
+    }
+    catch (err) {
+        throw err
+    }
+
+
 }

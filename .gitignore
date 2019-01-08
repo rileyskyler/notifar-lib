@@ -3,3 +3,5 @@ build/**/*
 ngrok
 nodemon.json
 .env
+.vscode
+.DS_Store

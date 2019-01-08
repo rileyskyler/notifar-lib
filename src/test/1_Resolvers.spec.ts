@@ -9,7 +9,8 @@ import { Configuration } from '../types/Configuration'
 require('dotenv').load();
 
 import GraphQLResolvers from '../graphql/resolvers/Index'
-import * as GraphQLType from '../types/GraphQlSchema'
+
+import * as GraphQlSchema from '../types/GraphQlSchema'
 
 describe('Test', () => {
 
@@ -36,18 +37,20 @@ describe('Test', () => {
             `mongodb+srv://${conf.mongo.user}:${conf.mongo.password}@cluster0-beat6.mongodb.net/${conf.mongo.database}?retryWrites=true`,
             { useNewUrlParser: true }
         )
-
+            console.log(db)
     }
 
     before('before', async () => {
        await init()
     })
 
-    let userId : any;
+    let userId : string;
 
-    const userArgs : any = {
+    const userArgs : GraphQlSchema.CreateUser = {
         userInput: {
-            name: 'Trs'
+            name: 'Joe',
+            email: 'joe@email.com',
+            password: 'p@55w0rd'
         }
     }
 
@@ -57,29 +60,29 @@ describe('Test', () => {
         assert.equal(user.name, userArgs.userInput.name)
     })
     
-    it('Get a user', async () => {
-        const user = await resolver.user(userId)
-        assert.equal(user.name, userArgs.userInput.name)
-    })
+    // it('Get a user', async () => {
+    //     const user = await resolver.user(userId)
+    //     assert.equal(user.name, userArgs.userInput.name)
+    // })
 
-    let deviceId : any
+    // let deviceId : string
     
-    const deviceArgs : GraphQLType.ICreateDeviceOnRootMutationArguments = {
-        deviceInput: {
-            tel: "+123456789"
-        }
-    }
+    // const deviceArgs : GraphQlSchema.CreateDevice = {
+    //     deviceInput: {
+    //         tel: "+123456789"
+    //     }
+    // }
 
-    it('Create a device', async () => {
-        const device = await resolver.createDevice(deviceArgs, userId)
-        assert.equal(device.tel, deviceArgs.deviceInput.tel)
+    // it('Create a device', async () => {
+    //     const device = await resolver.createDevice(deviceArgs)
+    //     assert.equal(device.tel, deviceArgs.deviceInput.tel)
         
-    })
+    // })
 
-    it('Get a device', async () => {
-        const res = await resolver.createDevice(deviceArgs, userId)
-        assert.equal(res.tel, deviceArgs.deviceInput.tel)
-    })
+    // it('Get a device', async () => {
+    //     const res = await resolver.createDevice(deviceArgs, userId)
+    //     assert.equal(res.tel, deviceArgs.deviceInput.tel)
+    // })
 
     after('after', async () => {
         db.disconnect()

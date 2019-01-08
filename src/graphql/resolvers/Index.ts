@@ -1,4 +1,6 @@
 import Registry from './Registry'
+import Auth from './Auth'
+
 import { Configuration } from '../../types/Configuration';
 
 export class RootResolver {
@@ -9,7 +11,8 @@ export class RootResolver {
     constructor(configuration : Configuration) {
         this.conf = configuration
         this.methods = {
-            ... new Registry(this.conf).methods
+            ... new Registry(this.conf).methods,
+            ... new Auth(this.conf).methods
         }
     }
 

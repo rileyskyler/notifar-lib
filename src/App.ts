@@ -8,7 +8,7 @@ import * as Mongoose from 'mongoose'
 
 const fileName = require('./helpers/File').getFileName(__filename, __dirname)
 
-import Message from './types/Message'
+import Message from './types/Misc'
 
 require('dotenv').load();
 
@@ -16,19 +16,23 @@ import * as Location from './graphql/resolvers/Location'
 import GraphQLResolvers from './graphql/resolvers/Index'
 import { Configuration } from './types/Configuration'
 
+import * as Authentication from './middlewear/Authenticaton'
+
 import logger from './helpers/Logger'
 
 export const init : Function = async (conf: Configuration) : Promise<any> => {
 
-    await Mongoose.connect(
-        `mongodb+srv://${conf.mongo.user}:${conf.mongo.password}@cluster0-beat6.mongodb.net/${conf.mongo.database}?retryWrites=true`,
-        { useNewUrlParser: true }
+    
+    const db = await Mongoose.connect(
+            `mongodb+srv://skyler:${conf.mongo.password}@cluster0-beat6.mongodb.net/${conf.mongo.database}?retryWrites=true`,
+            { useNewUrlParser: true }
     )
 
     const app = express();
-
+    
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(Authentication.verify)
 
     app.use('/api',graphqlHttp({
         schema: await graphql.buildSchema(
@@ -64,7 +68,6 @@ const main : Function = async () : Promise<any> => {
     }
 
     const app = await init(conf)
-    
     const PORT = conf.port || 3000;
     await http.createServer(app).listen(PORT, () => {
         conf.logger.info(`[${fileName}] Notifar server running on port ${PORT}`);

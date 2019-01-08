@@ -2,10 +2,15 @@ import Location from '../../models/Location'
 import User from '../../models/User'
 import Device from '../../models/Device'
 
-import { Configuration } from '../../types/Configuration' 
-import { ICreateLocationOnRootMutationArguments, ILocation } from '../../types/GraphQlSchema';
+import * as bcrypt from 'bcryptjs'
 
-const fileName = require('../../helpers/File').getFileName(__filename, __dirname)
+import * as GraphQlType from '../../types/GraphQlSchema'
+
+import * as Misc from '../../types/Misc'
+
+import { Configuration } from '../../types/Configuration' 
+
+require('dotenv').load();
 
 class Registry {
 
@@ -17,6 +22,16 @@ class Registry {
         this.conf = configuration
         
         this.methods = {
+
+            login: async (args: any) => {
+                try {
+                    User.findOne({email: 'test'})
+                    
+                }
+                catch (err) {
+                    throw err
+                }
+            },
             
             users: async () => {
                 try {
@@ -50,13 +65,13 @@ class Registry {
             
             locations: async (locationIds : any) => {
                 
-                this.conf.logger.info(`[${fileName}] Locations`);
+                this.conf.logger.info(`[Registry] Locations`);
                 
                 try {
                     return (await Location.find({ _id: {$in: locationIds} })).map((location: any) => {
                         return {
                             ...location._doc,
-                            _id: location.id,
+                            _id: location.id
                         }
                     })
                 }
@@ -67,13 +82,20 @@ class Registry {
             
             createUser: async (args: any) => {
                 
-                this.conf.logger.info(`[${fileName}] Create User`);
+                this.conf.logger.info(`[Registry] Create User`);
                 
                 try {
+
+                    const hashedPassword = await bcrypt.hash(args.userInput.password, 12)
+
                     const user = new User({
-                        name: args.userInput.name
+                        name: args.userInput.name,
+                        email: args.userInput.email,
+                        password: hashedPassword
                     })
+
                     const res : any = await user.save()
+
                     return {name: res.name, _id: res._id.toString()}
                 }
                 catch (err) {
@@ -81,47 +103,35 @@ class Registry {
                 }
             },
             
-            createDevice: async (args : any) => {
+            createDevice: async (args : GraphQlType.CreateDevice) => {
                 
-                this.conf.logger.info(`[${fileName}] Create Device`);
+                this.conf.logger.info(`[Registry] Create Device`);
 
                 try {
+
+                    const deviceKey: Misc.DeviceKey = {
+                        tel: args.deviceInput.tel,
+                        key: process.env.AUTH_KEY
+                    }
+
                     const device = new Device({
-                        tel: args.deviceInput.tel
+                        tel: args.deviceInput.tel,
+                        privateKey: bcrypt.hash(JSON.stringify(deviceKey), 12),
                     })
+
                     const res : any = await device.save();
-                    const user : any = await User.findById('5c2929c0b676ce274162efa9');
+                    
+                    const user : any = await User.findById('5c2929c0b676ce274162efa9'); 
                     user.devices.push(device);
                     await user.save()
-                    //fix
-                    return {_id: res._id.toString(), tel: res.tel};
-                }
-                catch (err) {
-                    throw err
-                }
-            },
-    
-            // NOT FOR PRODUCTION!!!
-
-            createLocation: async (args : any) => {
-
-                this.conf.logger.info(`[${fileName}] Create Location`);
-                
-                try {
-                    const location = new Location({
-                        longitude: args.locationInput.longitude,
-                        latitude: args.locationInput.latitude
-                    })
-                    const res : any = await location.save()
-                    const device : any = await Device.findById('5c30212bb669670d95f229ce')
-                    device.locations.push(location)
-                    device.save()
-                    return {...res._doc, _id: res.id}
+                    
+                    return {...res._doc, _id: res.id};
                 }
                 catch (err) {
                     throw err
                 }
             }
+
         }
 
     }
