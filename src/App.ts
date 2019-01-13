@@ -6,8 +6,6 @@ const graphql = require('graphql')
 import * as fs from 'fs'
 import * as Mongoose from 'mongoose'
 
-const fileName = require('./helpers/File').getFileName(__filename, __dirname)
-
 import Message from './types/Misc'
 
 require('dotenv').load();
@@ -15,6 +13,8 @@ require('dotenv').load();
 import * as Location from './graphql/resolvers/Location'
 import GraphQLResolvers from './graphql/resolvers/Index'
 import { Configuration } from './types/Configuration'
+const cors = require('cors')
+
 
 import * as Authentication from './middlewear/Authenticaton'
 
@@ -29,8 +29,9 @@ export const init : Function = async (conf: Configuration) : Promise<any> => {
     )
 
     const app = express();
-    
+
     app.use(bodyParser.json());
+    app.use(cors())
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(Authentication.verify)
 
@@ -70,7 +71,7 @@ const main : Function = async () : Promise<any> => {
     const app = await init(conf)
     const PORT = conf.port || 3000;
     await http.createServer(app).listen(PORT, () => {
-        conf.logger.info(`[${fileName}] Notifar server running on port ${PORT}`);
+        conf.logger.info(`[App] Notifar server running on port ${PORT}`);
     })
 
 }
