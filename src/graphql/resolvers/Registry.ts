@@ -37,8 +37,23 @@ class Registry {
                     throw err
                 }
             },
-            
-            devices: async (deviceIds : any) => {
+
+            user: async (args: any, req: any) => {
+                      
+                try {
+                    const user: any =  await User.findById(req.userId)
+                    return {
+                        ...user._doc,
+                        _id: user.id,
+                        devices: this.methods.devices.bind(this, user._doc.devices)
+                    }
+                }
+                catch (err) {
+                    throw err
+                }
+            },
+
+            devices: async (deviceIds : any, req: any) => {
                 
                 try {
                     return (await Device.find({ _id: { $in: deviceIds } })).map((device : any) => {

@@ -3,21 +3,20 @@ type User {
     name: String!
     email: String!
     password: String!
-    devices: [Device!]
+    devices: [Device]!
 }
 
 type Device {
     _id: ID
     tel: String!
     privateKey: String!
-    locations: [Location!]
+    locations: [Location]!
 }
 
 type Location {
     _id: ID
     longitude: String!
     latitude: String!
-    device: Device!
 }
 
 type Authentication {
@@ -55,6 +54,7 @@ type RootMutation {
 type RootQuery {
     locations: [Location!]!
     users: [User!]!
+    user: User!
     devices: [Device!]!
     login(loginInput: LoginInput!) : Authentication! 
 }

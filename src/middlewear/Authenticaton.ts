@@ -2,7 +2,7 @@ import * as jwt from 'jsonwebtoken'
 require('dotenv').load();
 
 export const verify = async (req: any, res: any, next: any) => {
-    
+
     const authHeader = req.get('Authorization')
 
     if(!authHeader) {
